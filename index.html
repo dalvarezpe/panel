@@ -11,7 +11,7 @@
 
 
 
-<title>My Website</title>
+<title>index.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -296,12 +296,60 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">My Website</h1>
 
 </div>
 
 
-
+<p>library(shinydashboard) library(shiny) library(DT) library(plotly) library(colourpicker) library(tools) library(stringr) # title &lt;- tags<span class="math inline">\(a(href=&#39;https://www.google.com&#39;, # icon(&quot;diamond&quot;), # &#39;Diamonds Explorer&#39;) title &lt;- tags\)</span>a(href=‘<a href="https://www.google.com" class="uri">https://www.google.com</a>’, tags$img(src=“logo.png”, height=‘40’, widht=‘40’), ‘DATA WORLD BOLIVIA’)</p>
+<p>header &lt;- dashboardHeader( title = title, titleWidth = 600, dropdownMenu( type = “messages”, messageItem( from = “DATA WORLD BOLIVIA”, message = “Invitación a cursos”, icon = icon(“graduation”), href = “<a href="https://drive.google.com/open?id=19OeeZMSIreqyoBLNg9LUZjPqHlGXQT3H" class="uri">https://drive.google.com/open?id=19OeeZMSIreqyoBLNg9LUZjPqHlGXQT3H</a>” ), # Add a second messageItem() messageItem( from = “DATA WORLD BOLIVIA”, message = “New Course”, href = “<a href="https://spotthestation.nasa.gov/faq.cfm" class="uri">https://spotthestation.nasa.gov/faq.cfm</a>” ) )) ####END DASHBOARDHEADER</p>
+<p>sidebar&lt;- dashboardSidebar( selectInput(“var”,“Elegir Indicador”, choices=levels(DATAB<span class="math inline">\(Indicador),  multiple = FALSE,  selected = &quot;buscar&quot;),#Prima de riesgo por préstamo(tasa de la prima menos tasa de los bonos del tesoro,%)  sliderInput(&quot;years&quot;, &quot;Años&quot;,  min(DATAB\)</span>Año), max(DATAB$Año), value = c(1990, 2019)), hr(), colourInput(“colour”, “Elegir color”, value = “#3F8596”), numericInput(“size”, “Ajustar Tamaño”, 1, 1), hr(), textInput(“title”, “Título”, “Escribe el título”), textInput(“eje”,“Valor de eje”,“Escribe los valores del eje”) )</p>
+<p>body &lt;- dashboardBody(“DASHBOAR BODDY”, tags<span class="math inline">\(head(tags\)</span>link(rel=“stylesheet”,type=“text/css”, href=“custom.css”)), tabsetPanel(type = “tabs”, tabPanel(“GRAFICO”, fluidRow( column(width = 8, plotlyOutput(“plot”,height = “400”)), column(width = 4, tableOutput(outputId = “sum”))),</p>
+<pre><code>                              tableOutput(outputId = &quot;table1&quot;)),
+                           tabPanel(&quot;DESCARGAR DATOS&quot;,downloadButton(outputId = &quot;download_data&quot;, label = &quot;Descargar datos&quot;),
+                                       DT::dataTableOutput(&quot;table&quot;)),
+                           tabPanel(&quot;BUSCAR INDICADORES&quot;, dataTableOutput(outputId = &quot;codebook&quot;))</code></pre>
+<p>))</p>
+<p>server &lt;- function(input, output) { output<span class="math inline">\(plot&lt;-renderPlotly({  ggplotly({  DAT&lt;-subset(DATAB,  Indicador %in% input\)</span>var&amp; Año &gt;= input<span class="math inline">\(years[1] &amp; Año &lt;= input\)</span>years[2])</p>
+<pre><code>  p&lt;-ggplot(DAT, aes(Año, Valor))+
+    geom_line(size = input$size, col = input$colour)+
+    ggtitle(input$title)+
+    xlab(&quot;Año&quot;)  + ylab(input$eje)
+  p
+})</code></pre>
+<p>}) sliderValues &lt;- reactive({ data.frame( Estadísticos = c(“Media”,“Mediana”,“Desviación Estándar”,“Mínimo”,“Máximo”),</p>
+<pre><code>  Valor= as.character(c(summarise(subset(DATAB, 
+                                         Indicador %in% input$var&amp;
+                                           Año &gt;= input$years[1] &amp; Año &lt;= input$years[2]),
+                                  media=mean(Valor)%&gt;%round(.,2)),
+                        
+                        summarise(subset(DATAB, 
+                                         Indicador %in% input$var&amp;
+                                           Año &gt;= input$years[1] &amp; Año &lt;= input$years[2]),
+                                  media=median(Valor)%&gt;%round(.,2)),
+                        
+                        summarise(subset(DATAB, 
+                                         Indicador %in% input$var&amp;
+                                           Año &gt;= input$years[1] &amp; Año &lt;= input$years[2]),
+                                  desviacion_standar=sd(Valor)%&gt;%round(.,2)),
+                        summarise(subset(DATAB, 
+                                         Indicador %in% input$var&amp;
+                                           Año &gt;= input$years[1] &amp; Año &lt;= input$years[2]),
+                                  media=min(Valor)%&gt;%round(.,2)),
+                        summarise(subset(DATAB, 
+                                         Indicador %in% input$var&amp;
+                                           Año &gt;= input$years[1] &amp; Año &lt;= input$years[2]),
+                                  media=max(Valor)%&gt;%round(.,2))
+  ),
+  
+  stringsAsFactors=F)
+  
+)</code></pre>
+<p>}) output$sum &lt;- renderTable({ sliderValues() })</p>
+<p>output<span class="math inline">\(table&lt;- DT::renderDataTable({DATA1&lt;-select(subset(DATAB,  Indicador %in% input\)</span>var&amp; Año &gt;= input<span class="math inline">\(years[1] &amp; Año &lt;= input\)</span>years[2]),Año,Indicador,Valor) }) output<span class="math inline">\(table1&lt;- renderTable({head(select(subset(DATAB,  Indicador %in% input\)</span>var&amp; Año &gt;= input<span class="math inline">\(years[1] &amp; Año &lt;= input\)</span>years[2]),NOTA,FUENTE),1) })</p>
+<p>output$download_data &lt;- downloadHandler( filename = “data.csv”, content = function(file) {DAT</p>
+<pre><code>  write.csv(DAT,file,row.names = FALSE)})</code></pre>
+<p>output$codebook &lt;- renderDataTable({ datatable(data=CODEBOOK, options = list(pageLenght = 10, lengthMenu = c(10,25,40)), rownames = T) }) }</p>
+<p>ui &lt;- dashboardPage(header = header, sidebar = sidebar, body = body ) shinyApp(ui, server)</p>
 
 
 

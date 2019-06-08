@@ -1,4 +1,3 @@
-```{r echo=FALSE}
 library(shinydashboard)
 library(shiny)
 library(DT)
@@ -10,8 +9,8 @@ library(stringr)
 #                icon("diamond"),
 #               'Diamonds Explorer')
 title <- tags$a(href='https://www.google.com',
-               tags$img(src="logo.png", height='40', widht='40'),
-              'DATA WORLD BOLIVIA')
+                tags$img(src="logo.png", height='40', widht='40'),
+                'DATA WORLD BOLIVIA')
 
 header <- dashboardHeader(
   title = title, titleWidth = 600,
@@ -49,20 +48,20 @@ sidebar<- dashboardSidebar(
 )
 
 body <- dashboardBody("DASHBOAR BODDY",
-  tags$head(tags$link(rel="stylesheet",type="text/css", href="custom.css")),
-  tabsetPanel(type = "tabs",
-                              tabPanel("GRAFICO",
-                                fluidRow(
-                                  column(width = 8,
-                                    plotlyOutput("plot",height = "400")),
-                                  column(width = 4,
-                                    tableOutput(outputId = "sum"))),
-                       
-                                  tableOutput(outputId = "table1")),
-                               tabPanel("DESCARGAR DATOS",downloadButton(outputId = "download_data", label = "Descargar datos"),
+                      tags$head(tags$link(rel="stylesheet",type="text/css", href="custom.css")),
+                      tabsetPanel(type = "tabs",
+                                  tabPanel("GRAFICO",
+                                           fluidRow(
+                                             column(width = 8,
+                                                    plotlyOutput("plot",height = "400")),
+                                             column(width = 4,
+                                                    tableOutput(outputId = "sum"))),
+                                           
+                                           tableOutput(outputId = "table1")),
+                                  tabPanel("DESCARGAR DATOS",downloadButton(outputId = "download_data", label = "Descargar datos"),
                                            DT::dataTableOutput("table")),
-                               tabPanel("BUSCAR INDICADORES", dataTableOutput(outputId = "codebook"))
-))
+                                  tabPanel("BUSCAR INDICADORES", dataTableOutput(outputId = "codebook"))
+                      ))
 
 server <- function(input, output) {
   output$plot<-renderPlotly({
@@ -140,6 +139,3 @@ ui <- dashboardPage(header = header,
                     body = body
 )
 shinyApp(ui, server)
-
-```
-
